@@ -38,6 +38,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.self_improvement_rounded),
+                    tooltip: 'Meditation',
                     onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const MeditationScreen()),
@@ -63,11 +64,15 @@ class HomeScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: LinearProgressIndicator(
-                        value: journeyNotifier.progressToNextMilestone,
-                        backgroundColor: Colors.white24,
-                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-                        minHeight: 8,
+                      child: Semantics(
+                        label: 'Journey progress',
+                        value: '${(journeyNotifier.progressToNextMilestone * 100).toInt()}%',
+                        child: LinearProgressIndicator(
+                          value: journeyNotifier.progressToNextMilestone,
+                          backgroundColor: Colors.white24,
+                          valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                          minHeight: 8,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),

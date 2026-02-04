@@ -55,10 +55,14 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LinearProgressIndicator(
-                value: (_currentPage + 1) / _questions.length,
-                backgroundColor: Colors.white.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(10),
+              Semantics(
+                label: 'Evaluation progress',
+                value: '${((_currentPage + 1) / _questions.length * 100).toInt()}%',
+                child: LinearProgressIndicator(
+                  value: (_currentPage + 1) / _questions.length,
+                  backgroundColor: Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               const SizedBox(height: 40),
               Expanded(

@@ -7,7 +7,13 @@ class QuickMoodLog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final moods = ['😢', '😕', '😐', '🙂', '😊'];
+    final moods = [
+      (emoji: '😢', label: 'Sad'),
+      (emoji: '😕', label: 'Meh'),
+      (emoji: '😐', label: 'Neutral'),
+      (emoji: '🙂', label: 'Good'),
+      (emoji: '😊', label: 'Great'),
+    ];
 
     return MelosCard(
       child: Column(
@@ -22,22 +28,29 @@ class QuickMoodLog extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
               moods.length,
-              (index) => InkWell(
-                onTap: () {
-                  // Log mood
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Mood ${moods[index]} logged!')),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.05),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    moods[index],
-                    style: const TextStyle(fontSize: 24),
+              (index) => Tooltip(
+                message: moods[index].label,
+                child: Semantics(
+                  label: moods[index].label,
+                  button: true,
+                  child: InkWell(
+                    onTap: () {
+                      // Log mood
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Mood ${moods[index].emoji} logged!')),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.05),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        moods[index].emoji,
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                    ),
                   ),
                 ),
               ),

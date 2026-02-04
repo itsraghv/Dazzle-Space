@@ -25,6 +25,7 @@ class _DailyCheckinScreenState extends State<DailyCheckinScreen> {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.close_rounded),
+                    tooltip: 'Close',
                     onPressed: () => Navigator.pop(context),
                   ),
                   const Text('Daily Check-in', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
@@ -51,20 +52,35 @@ class _DailyCheckinScreenState extends State<DailyCheckinScreen> {
   }
 
   Widget _buildMoodStep() {
+    final moods = [
+      (emoji: '😢', label: 'Sad'),
+      (emoji: '😕', label: 'Meh'),
+      (emoji: '😐', label: 'Neutral'),
+      (emoji: '🙂', label: 'Good'),
+      (emoji: '😊', label: 'Great'),
+    ];
+
     return _buildStepTemplate(
       title: 'How was your mood today?',
       child: Wrap(
         spacing: 16,
         runSpacing: 16,
-        children: ['😢', '😕', '😐', '🙂', '😊'].map((e) => InkWell(
-          onTap: () => _nextPage(),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+        children: moods.map((m) => Tooltip(
+          message: m.label,
+          child: Semantics(
+            label: m.label,
+            button: true,
+            child: InkWell(
+              onTap: () => _nextPage(),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(m.emoji, style: const TextStyle(fontSize: 32)),
+              ),
             ),
-            child: Text(e, style: const TextStyle(fontSize: 32)),
           ),
         )).toList(),
       ),
