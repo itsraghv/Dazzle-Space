@@ -3,8 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 
 class AuthService {
-  final _mockUserStreamController = StreamController<User?>();
+  final _mockUserStreamController = StreamController<User?>.broadcast();
   User? _mockUser;
+
+  AuthService() {
+    // Emit initial null for mock mode
+    Timer.run(() => _mockUserStreamController.add(null));
+  }
 
   bool get _isSupabaseInitialized {
     try {
