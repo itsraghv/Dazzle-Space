@@ -103,8 +103,149 @@ export const getLandingPageData = async () => {
     // const data = await basehub().query({ ... });
 
     return defaults;
-  } catch (e) {
-    console.warn("BaseHub fetch failed, using defaults", e);
+  } catch (error) {
+    console.warn("BaseHub fetch failed, using defaults", error);
     return defaults;
+  }
+};
+
+export interface Author {
+  name: string;
+  role: string;
+  avatar?: string;
+  bio?: string;
+}
+
+export interface Category {
+  title: string;
+  slug: string;
+}
+
+export interface BlogPost {
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: string;
+  author: Author;
+  categories: Category[];
+  readingTime: string;
+  coverImage?: string;
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  content: { json: any }; // BaseHub RichText json
+  featured?: boolean;
+}
+
+const blogDefaults: BlogPost[] = [
+  {
+    title: "How to master your daily schedule",
+    slug: "master-your-daily-schedule",
+    excerpt: "Discover the best techniques to organize your day and boost your productivity without feeling overwhelmed.",
+    date: "2025-02-10",
+    author: {
+      name: "Daniel K.",
+      role: "Product Strategy",
+      bio: "Daniel is a product manager with 10 years of experience in productivity tools."
+    },
+    categories: [{ title: "Productivity", slug: "productivity" }, { title: "Guides", slug: "guides" }],
+    readingTime: "5 min read",
+    featured: true,
+    content: {
+      json: {
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "Planning your day shouldn't be a chore. With the right tools and mindset, you can transform your schedule from a source of stress into a roadmap for success." }]
+          },
+          {
+            type: "heading",
+            attrs: { level: 2 },
+            content: [{ type: "text", text: "The Power of Time Blocking" }]
+          },
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "Time blocking is a simple yet effective way to manage your time. By assigning specific tasks to specific time slots, you reduce decision fatigue and improve focus." }]
+          }
+        ]
+      }
+    }
+  },
+  {
+    title: "Why we built Dayconn",
+    slug: "why-we-built-dayconn",
+    excerpt: "The story behind our mission to simplify scheduling for everyone, everywhere.",
+    date: "2025-01-25",
+    author: {
+      name: "Sofia L.",
+      role: "Co-founder",
+      bio: "Sofia is passionate about building tools that help people live more balanced lives."
+    },
+    categories: [{ title: "Company", slug: "company" }],
+    readingTime: "3 min read",
+    content: {
+      json: {
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "We started Dayconn because we were tired of complex calendar apps that felt like work just to use. We wanted something simple, beautiful, and intuitive." }]
+          }
+        ]
+      }
+    }
+  },
+  {
+    title: "5 tips for better team collaboration",
+    slug: "tips-for-team-collaboration",
+    excerpt: "Effective communication and shared schedules are key to any successful project. Here is how to do it right.",
+    date: "2025-01-15",
+    author: {
+      name: "Arjun P.",
+      role: "Engineering Lead",
+      bio: "Arjun leads the engineering team at Dayconn and loves distributed systems."
+    },
+    categories: [{ title: "Teamwork", slug: "teamwork" }],
+    readingTime: "4 min read",
+    content: {
+      json: {
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "Collaboration is more than just talking; it's about alignment. Shared calendars are one of the best ways to achieve that alignment." }]
+          }
+        ]
+      }
+    }
+  }
+];
+
+export const getBlogData = async () => {
+  try {
+    // Fetch from BaseHub logic here
+    return {
+      posts: blogDefaults,
+      categories: [
+        { title: "All", slug: "all" },
+        { title: "Productivity", slug: "productivity" },
+        { title: "Guides", slug: "guides" },
+        { title: "Company", slug: "company" },
+        { title: "Teamwork", slug: "teamwork" },
+      ]
+    };
+  } catch {
+    return {
+      posts: blogDefaults,
+      categories: []
+    };
+  }
+};
+
+export const getBlogPostBySlug = async (slug: string): Promise<BlogPost | undefined> => {
+  try {
+    // Fetch from BaseHub logic here
+    return blogDefaults.find(p => p.slug === slug);
+  } catch {
+    return blogDefaults.find(p => p.slug === slug);
   }
 };
